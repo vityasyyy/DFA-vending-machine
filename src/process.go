@@ -18,6 +18,10 @@ func ProcessInput(dfa *config.DFA, currentState string, input string, vendingMac
 	// Check if this is a purchase command
 	if strings.HasPrefix(input, "P") {
 		input = config.PriceMap[input]
+		if input == "" {
+			fmt.Printf("Error: Product '%s' not found.\n", input)
+			return currentState
+		}
 		fmt.Print("input:", input)
 		_, _ = ProcessPurchase(input, currentState, vendingMachineProducts, dfa)
 	}
@@ -97,6 +101,14 @@ func ProcessPurchase(input string, currentState string, vendingMachineProducts [
 	// Determine the new state after purchase (based on remaining balance)
 	newStateValue := dfa.Transitions[currentState][input]
 
+	isAccepted := false
+
+	for _, state := range dfa.AcceptStates {
+		if newStateValue == state {
+			isAccepted = true
+			break
+		}
+	}
 	// Validate if the new state exists in the DFA
 	if _, exists := dfa.Transitions[currentState][input]; !exists {
 		fmt.Printf("Error: Transition to state is not valid in the DFA.\n")
@@ -107,6 +119,7 @@ func ProcessPurchase(input string, currentState string, vendingMachineProducts [
 	fmt.Println("\n============================================")
 	fmt.Printf("🎉 Successfully purchased %s!\n", productName)
 	fmt.Printf("💰 Change: %d\n", change)
+	fmt.Printf("Accepted? %t\n", isAccepted)
 	fmt.Println("============================================")
 
 	return newStateValue, change

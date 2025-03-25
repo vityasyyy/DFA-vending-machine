@@ -69,6 +69,10 @@ func main() {
 		if strings.HasPrefix(input, "P") {
 			// Extract the price from the input
 			input = config.PriceMap[input]
+			if input == "" {
+				fmt.Print("Error: Product not found.\n")
+				continue
+			}
 			productPrice, err := strconv.Atoi(input[1:])
 			if err == nil {
 				// This is a valid purchase command
