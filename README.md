@@ -35,11 +35,18 @@ Ensure you have the following installed:
    git clone https://github.com/yourusername/DFA-vending-machine.git
    cd DFA-vending-machine
    ```
-2. **Run the vending machine**  
+2. **Run the vending machine or 3**  
    ```sh
    go run main.go
    ```
-
+3. **Build then run the binaries**
+   ```sh
+   go build
+   ```
+   then
+   ```sh
+   ./DFA-vending-machine
+   ```
 ---
 
 ## 🚀 Usage  
