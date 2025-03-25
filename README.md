@@ -18,6 +18,7 @@ A **Deterministic Finite Automata (DFA) based Vending Machine** implemented in *
 ---
 
 ## 👥 Team Members  
+Tugas dikerjakan bersama-sama melalui platform discord
 - **[Daffa Indra Wibowo (23/518514/PA/22253)]**   
 - **[M. Argya Vityasy (23/522547/PA/22475)]** 
 
