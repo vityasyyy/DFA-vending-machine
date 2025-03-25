@@ -18,8 +18,8 @@ A **Deterministic Finite Automata (DFA) based Vending Machine** implemented in *
 ---
 
 ## 👥 Team Members  
-- **[Daffa Indra Wibowo (NIM)]** - DFA Config  
-- **[M. Argya Vityasy (23/522547/PA/22475)]** - Code
+- **[Daffa Indra Wibowo (23/518514/PA/22253)]**   
+- **[M. Argya Vityasy (23/522547/PA/22475)]** 
 
 ---
 
@@ -58,10 +58,13 @@ Ensure you have the following installed:
 ## 📷 Screenshots
 
 ### Vending Machine Demo (Input Output)
+#### Success Right Away
 ![Successful Payment](images/success_right_away.png)
 
+#### Insufficient Money
 ![Insufficient Money](images/insufficient_then_success.png)
 
+#### Reached a Dead State
 ![Dead State](images/dead_state.png)
 
 ---
