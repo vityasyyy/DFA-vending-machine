@@ -39,6 +39,9 @@ func main() {
 		}
 	}
 
+	// Initialize the current state with the start state
+	currentState := dfa.StartState
+
 	// Create an endless loop for DFA evaluation
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -53,21 +56,19 @@ func main() {
 		}
 
 		// Process the input through the DFA
-		processInput(dfa, input)
+		currentState = processInput(dfa, currentState, input)
 	}
 }
 
-// processInput takes a DFA and an input string and processes it,
+// processInput takes a DFA, the current state, and an input string and processes it,
 // displaying each transition step
-func processInput(dfa *DFA, input string) {
-	// Start from the first state (assuming it's the start state)
-	currentState := dfa.States[0]
+func processInput(dfa *DFA, currentState string, input string) string {
 	fmt.Printf("Starting at state: %s\n", currentState)
 
 	// Check if the input string is in the alphabet
 	if !isInAlphabet(dfa, input) {
 		fmt.Printf("Error: Input '%s' contains symbols not in the alphabet.\n", input)
-		return
+		return currentState
 	}
 
 	// Check if there's a transition for this state and input
@@ -77,7 +78,7 @@ func processInput(dfa *DFA, input string) {
 		fmt.Println("Current state:", currentState)
 	} else {
 		fmt.Printf("Error: No transition defined for state '%s' and input '%s'.\n", currentState, input)
-		return
+		return currentState
 	}
 
 	// Check if the final state is an accept state
@@ -95,6 +96,8 @@ func processInput(dfa *DFA, input string) {
 	} else {
 		fmt.Println("Result: REJECTED ✗")
 	}
+
+	return currentState
 }
 
 // Helper function to check if the input string is in the alphabet
