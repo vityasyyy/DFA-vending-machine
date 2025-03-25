@@ -34,9 +34,6 @@ func main() {
 	// Initialize the current state with the start state
 	currentState := dfa.StartState
 
-	// Create an array to store all inputs
-	var inputStream []string
-
 	// Initialize transaction history
 	transactionHistory = []string{currentState}
 
@@ -61,7 +58,7 @@ func main() {
 			// Exit command received
 			fmt.Println("Processing input stream and exiting...")
 			// Process the entire input stream before exiting
-			displayStateTransitionDiagram(inputStream, transactionHistory)
+			displayStateTransitionDiagram(transactionHistory)
 			break
 		}
 
@@ -82,7 +79,6 @@ func main() {
 				if newState != currentState {
 					currentState = newState
 					// Record this purchase in our input stream
-					inputStream = append(inputStream, input)
 					transactionHistory = append(transactionHistory, fmt.Sprintf("Purchase: %d (Change: %d)", productPrice, change))
 					transactionHistory = append(transactionHistory, currentState)
 
@@ -91,11 +87,10 @@ func main() {
 
 					// Process the entire input stream before exiting
 					fmt.Println("\nPurchase completed! Processing transaction history and exiting...")
-					displayStateTransitionDiagram(inputStream, transactionHistory)
+					displayStateTransitionDiagram(transactionHistory)
 					break
 				} else {
 					// Failed purchase
-					inputStream = append(inputStream, input)
 					transactionHistory = append(transactionHistory, fmt.Sprintf("Failed Purchase: %d", productPrice))
 					transactionHistory = append(transactionHistory, currentState)
 				}
@@ -104,7 +99,6 @@ func main() {
 		}
 
 		// Handle regular input
-		inputStream = append(inputStream, input)
 		nextState := src.ProcessInput(dfa, currentState, input, vendingMachineProducts)
 
 		// Check if the machine is in a dead state
@@ -125,7 +119,7 @@ func main() {
 }
 
 // displayStateTransitionDiagram shows a text-based representation of the state transition path
-func displayStateTransitionDiagram(inputStream []string, history []string) {
+func displayStateTransitionDiagram(history []string) {
 	fmt.Println("\n============================================")
 	fmt.Println("        STATE TRANSITION DIAGRAM")
 	fmt.Println("============================================")
@@ -145,56 +139,6 @@ func displayStateTransitionDiagram(inputStream []string, history []string) {
 			// This is a transition label
 			fmt.Printf("\n    |\n    | %s\n    v\n", history[i])
 		}
-	}
-
-	// Check which products were purchased
-	purchasedProducts := []string{}
-	for _, input := range inputStream {
-		if strings.HasPrefix(input, "-") {
-			price, _ := strconv.Atoi(input[1:])
-			for _, product := range vendingMachineProducts {
-				if product.Price == price {
-					purchasedProducts = append(purchasedProducts, product.Name)
-				}
-			}
-		}
-	}
-
-	fmt.Println("\n============================================")
-	fmt.Println("TRANSACTION SUMMARY")
-	fmt.Println("============================================")
-
-	// Calculate total money inserted
-	totalInserted := 0
-	for _, input := range inputStream {
-		if !strings.HasPrefix(input, "-") {
-			if value, err := strconv.Atoi(input); err == nil {
-				totalInserted += value
-			}
-		}
-	}
-
-	// Calculate total spent
-	totalSpent := 0
-	for _, input := range inputStream {
-		if strings.HasPrefix(input, "-") {
-			if value, err := strconv.Atoi(input[1:]); err == nil {
-				totalSpent += value
-			}
-		}
-	}
-
-	fmt.Printf("Total money inserted: %d\n", totalInserted)
-	fmt.Printf("Total money spent: %d\n", totalSpent)
-	fmt.Printf("Change received: %d\n", totalInserted-totalSpent)
-
-	if len(purchasedProducts) > 0 {
-		fmt.Println("\nProducts purchased:")
-		for _, product := range purchasedProducts {
-			fmt.Printf("  - %s\n", product)
-		}
-	} else {
-		fmt.Println("\nNo products were purchased.")
 	}
 
 	fmt.Println("\n============================================")
